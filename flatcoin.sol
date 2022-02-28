@@ -13,14 +13,15 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
 contract FlatCoin is ERC20, Ownable, ChainlinkClient {
     using Chainlink for Chainlink.Request;
-    address private constant FACTORY = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
-    address private constant ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
 
     address private oracle;
     bytes32 private jobId;
     uint256 private fee;
 
-    uint256 public immutable referenceIndex = 0.18917963102 * 10 ** 18;
+    //REFERENCE_INDEX = avg(brent + gold+ sugar)
+    // 0.0098241067923047 + 0.056803632236095 + 0.0005268111589
+
+    uint256 public immutable REFERENCE_INDEX = 0.06715455018 * 10 ** 18;
     uint256 public currentIndex;
     
     uint256 public BRENTOIL_PRICE;
@@ -45,7 +46,6 @@ contract FlatCoin is ERC20, Ownable, ChainlinkClient {
      */
     
     constructor() ERC20("StableCoin", "Stable") {
-        _mint(msg.sender, 100000 * 10 ** decimals());
         priceFeed = AggregatorV3Interface(0x9326BFA02ADD2366b30bacB125260Af641031331);
         
         setPublicChainlinkToken();
@@ -101,7 +101,50 @@ contract FlatCoin is ERC20, Ownable, ChainlinkClient {
         BRENTOIL_PRICE = _BRENTOIL;
     }
 
+    function requestSugarPrice() public returns (bytes32 requestId) {
+        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfillSugarPrice.selector);
+        // Set the URL to perform the GET request on
+        request.add("get", "https://commodities-api.com/api/latest?access_key=wlg8y3040rwruc47ys58d21vua223v23sm7eun0shrul9vs49wcgzadcmtxq");
+       
+        request.add("path", "data.rates.SUGAR");
+        
+        // Multiply the result by 1000000000000000000 to remove decimals
+        int timesAmount = 10**18;
+        request.addInt("times", timesAmount);
+        
+        // Sends the request
+        return sendChainlinkRequestTo(oracle, request, fee);
+    }
     
+     /**
+     * Receive the response in the form of uint256
+     */ 
+    function fulfillSugarPrice(bytes32 _requestId, uint256 _SUGAR) public recordChainlinkFulfillment(_requestId){
+        SUGAR_PRICE = _SUGAR;
+    }
+
+    function requestGoldPrice() public returns (bytes32 requestId) {
+        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfillGoldPrice.selector);
+        // Set the URL to perform the GET request on
+        request.add("get", "https://commodities-api.com/api/latest?access_key=wlg8y3040rwruc47ys58d21vua223v23sm7eun0shrul9vs49wcgzadcmtxq");
+       
+        request.add("path", "data.rates.XAU");
+        
+        // Multiply the result by 1000000000000000000 to remove decimals
+        int timesAmount = 10**18;
+        request.addInt("times", timesAmount);
+        
+        // Sends the request
+        return sendChainlinkRequestTo(oracle, request, fee);
+    }
+    
+     /**
+     * Receive the response in the form of uint256
+     */ 
+    function fulfillGoldPrice(bytes32 _requestId, uint256 _GOLD) public recordChainlinkFulfillment(_requestId){
+        GOLD_PRICE = _GOLD;
+    }
+
     /**
      * Returns the latest ETH  price
      */
