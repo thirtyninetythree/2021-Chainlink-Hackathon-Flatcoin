@@ -53,7 +53,8 @@ contract FlatCoin is ERC20, Ownable, ChainlinkClient {
         jobId = "d5270d1c311941d0b08bead21fea7747";
         fee = 0.1 * 10 ** 18; // (Varies by network and job)
         requestBrentOilPrice();
-        
+        requestSugarPrice();
+        requestGoldPrice();
     }
 
     function mint(address _to, uint256 _amount) public payable {
@@ -75,14 +76,14 @@ contract FlatCoin is ERC20, Ownable, ChainlinkClient {
         emit Log("Collateral redeemed:", currentIndex * _amount);
     }
 
-    function getFlatCoinPrice() public returns(uint) {
+    function getFlatCoinPrice() public view returns(uint) {
         return totalSupply()/address(this).balance;
     }
     
     function requestBrentOilPrice() public returns (bytes32 requestId) {
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfillBrentOilPrice.selector);
         // Set the URL to perform the GET request on
-        request.add("get", "https://commodities-api.com/api/latest?access_key=wlg8y3040rwruc47ys58d21vua223v23sm7eun0shrul9vs49wcgzadcmtxq");
+        request.add("get", "https://commodities-api.com/api/latest?access_key=<YOUR KEY>");
        
         request.add("path", "data.rates.BRENTOIL");
         
@@ -104,7 +105,7 @@ contract FlatCoin is ERC20, Ownable, ChainlinkClient {
     function requestSugarPrice() public returns (bytes32 requestId) {
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfillSugarPrice.selector);
         // Set the URL to perform the GET request on
-        request.add("get", "https://commodities-api.com/api/latest?access_key=wlg8y3040rwruc47ys58d21vua223v23sm7eun0shrul9vs49wcgzadcmtxq");
+        request.add("get", "https://commodities-api.com/api/latest?access_key=<YOUR KEY>");
        
         request.add("path", "data.rates.SUGAR");
         
@@ -126,7 +127,7 @@ contract FlatCoin is ERC20, Ownable, ChainlinkClient {
     function requestGoldPrice() public returns (bytes32 requestId) {
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfillGoldPrice.selector);
         // Set the URL to perform the GET request on
-        request.add("get", "https://commodities-api.com/api/latest?access_key=wlg8y3040rwruc47ys58d21vua223v23sm7eun0shrul9vs49wcgzadcmtxq");
+        request.add("get", "https://commodities-api.com/api/latest?access_key=<YOUR KEY>");
        
         request.add("path", "data.rates.XAU");
         
