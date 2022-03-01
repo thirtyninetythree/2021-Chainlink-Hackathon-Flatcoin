@@ -9,3 +9,7 @@ The variance of these three commodities is 0.000355126 and the volatility is 0.0
 
 ![chart volatility](https://user-images.githubusercontent.com/98053458/156132068-160b5417-5a8b-41b4-93bf-a1e78e5e1337.png)
 
+
+Compared to the dollar(M2) supply. (As supply goes up, value goes down i.e inflation). 
+
+![united-states-money-supply-m2@2x](https://user-images.githubusercontent.com/98053458/156229721-70722861-2305-417d-a3f6-d06553d5ce09.png)
