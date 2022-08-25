@@ -2,6 +2,11 @@
 
 PRESENTED AT THE 2021 CHAINLINK HACKATHON. IT WASN'T NO 1 BUT STILL A GOOD PROJECT
 
+Inspired by these tweet from Brian Armstrong @coinbase
+
+<img width="600" alt="Screenshot 2022-08-25 at 11 45 36" src="https://user-images.githubusercontent.com/98053458/186619931-284210ec-976c-4998-b0e2-2837204e1cbe.png">
+
+
 optimizing for stability. a flatcoin will always be able to buy unit amount of commodity x. due to the idiosyncrasies of a single commodity, we use more than one commodity, averaging out its price action by including other commodities. 
 
 The variance of these three commodities is 0.000355126 and the volatility is 0.018844798. 
