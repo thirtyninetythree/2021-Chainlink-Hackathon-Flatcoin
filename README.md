@@ -19,4 +19,4 @@ Compared to the dollar(M2) supply. (As supply goes up, value goes down i.e infla
 
 ![united-states-money-supply-m2@2x](https://user-images.githubusercontent.com/98053458/156229721-70722861-2305-417d-a3f6-d06553d5ce09.png)
 
-Try mint some here : https://flatcoin.herokuapp.com/
+Try mint some here : https://flatcoin.herokuapp.com/ or read about it here: https://medium.com/@AllanKaranja/web3-hackathons-e7e269779bd3
